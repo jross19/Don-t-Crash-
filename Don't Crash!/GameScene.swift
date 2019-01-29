@@ -11,6 +11,7 @@ import GameplayKit
 
 class GameScene: SKScene {
     let player = SKSpriteNode(imageNamed: "player")
+    var time: Double = 2
     
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
@@ -53,11 +54,15 @@ class GameScene: SKScene {
         startNewLevel()
         
     }
+    func add1() {
+        time = time - 0.5
+    }
     
     func startNewLevel() {
+        let add1 = SKAction.run(self.add1)
         let spawn = SKAction.run(spawnEnemy)
-        let waitToSpawn = SKAction.wait(forDuration: 1)
-        let spawnSequence = SKAction.sequence([waitToSpawn, spawn])
+        let waitToSpawn = SKAction.wait(forDuration: time)
+        let spawnSequence = SKAction.sequence([waitToSpawn, spawn, add1])
         let spawnForever = SKAction.repeatForever(spawnSequence)
         self.run(spawnForever)
     }
